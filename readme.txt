@@ -1,3 +1,6 @@
+LIGA DE DOCKERHUB:
+https://hub.docker.com/repository/docker/amarin9622/project_manager
+
 Documentación de proyecto: Manejador de Proyectos.
 
 El funcionamiento de la aplicación como está, es muy simple. Simplemente se han instalado las
