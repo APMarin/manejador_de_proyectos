@@ -1,8 +1,8 @@
 const express=require("express")
-function getUsers(req, res, next) {
+function list(req, res, next) {
   res.send('Lista de usuarios');
 }
-function getUser(req, res, next) {
+function get(req, res, next) {
   const id=req.params.id;
   res.send('Un solo usuario con id: '+id);
 }
@@ -20,4 +20,4 @@ function edit(req, res, next) {
 function destroy(req, res, next) {
   res.send('Elimina solo usuario');
 }
-module.exports={getUsers,getUser,create,replace,edit,destroy};
+module.exports={list,get,create,replace,edit,destroy};
