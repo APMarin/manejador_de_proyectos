@@ -1,9 +1,12 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const controller = require("../controllers/stories");
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a story');
-});
+router.get('/', controller.list);
+router.get('/:id', controller.get);
+router.post('/', controller.create);
+router.put('/:id', controller.replace);
+router.patch('/:id', controller.edit);
+router.delete('/:id', controller.destroy);
 
 module.exports = router;
