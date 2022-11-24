@@ -53,8 +53,8 @@ async function create(req, res, next) {
 async function replace(req, res, next) {
     let stories=[];
     const id=req.params.id;
-    const startDate=req.body.startDate ? req.body.startDate : "";//FECHAS
-    const endDate=req.body.endDate ? req.body.endDate : "";
+    const startDate=req.body.startDate ? req.body.startDate : null;//FECHAS
+    const endDate=req.body.endDate ? req.body.endDate : null;
     const storiesIds=req.body.stories ? [req.body.storiesIds] : [];
     if(storiesIds.length>1){
         for(const storyId of storiesIds){

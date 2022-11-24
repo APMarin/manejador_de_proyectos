@@ -2,7 +2,7 @@ const express=require("express");
 const Story=require('../models/story');
 const config = require('config');
 
-function getStorys(req, res, next) {
+function getStories(req, res, next) {
     Story.find().then(obj=>res.status(200).json({
         message:res._('story.list_s'),
         obj: obj
@@ -63,7 +63,7 @@ function replace(req, res, next) {
     Details.what=req.body.what ? req.body.what :"";
     Details.for=req.body.for ? req.body.for :"";
     Details.cause=req.body.cause ? req.body.cause :"";
-    Details.date=req.body.date ? req.body.date :"";//Cómo se pone una fecha??
+    Details.date=req.body.date ? req.body.date :null;//Cómo se pone una fecha??
     Details.then=req.body.then ? req.body.then :"";
     let story=new Story({
         name:name,
@@ -131,4 +131,4 @@ function destroy(req, res, next) {
         message:res.__('story.destroy_f'),
         error: e
     }))}
-module.exports={getStorys,getStory,create,replace,edit,destroy};
+module.exports={getStories,getStory,create,replace,edit,destroy};
