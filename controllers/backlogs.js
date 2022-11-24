@@ -1,23 +1,120 @@
-const express=require("express")
-function list(req, res, next) {
-  res.send('Lista de usuarios');
+const express=require("express");
+const { findOneAndUpdate } = require("../models/backlog");
+const Backlog=require('../models/backlog');
+const Story = require("../models/story");
+const config = require('config');
+
+function getBacklogs(req, res, next) {
+    Backlog.find().then(obj=>res.status(200).json({
+        message:res.__('backlog.list_s'),
+        obj: obj
+    }))
+    .catch(e =>res.status(500).json({
+        message:res.__('backlog.list_f'),
+        error: e
+    }));
 }
-function get(req, res, next) {
+function getBacklog(req, res, next) {
   const id=req.params.id;
-  res.send('Un solo usuario con id: '+id);
+  Backlog.findOne({"_id":id}).then(obj=>res.status(200).json({
+    message:res.__('backlog.get_s'),
+    obj: obj
+  }))
+  .catch(e=>res.status(500).json({
+    message:res.__('backlog.get_f'),
+    error: e
+  }));
 }
-function create(req, res, next) {
-  const name=req.body.name;
-  const lastName=req.body.lastName;
-  res.send('Crea un solo usuario con nombre: '+name+' y apellido: '+lastName);
+async function create(req, res, next) {
+  let stories=[];
+  const startDate=req.body.startDate;
+  const endDate=req.body.endDate;
+  const storiesIds=[req.body.storiesIds];
+  if(storiesIds.length>1){
+  for(const storyId of storiesIds){
+    stories.push(await Story.findOne({"_id:":storyId}));
+  };}else{
+    stories.push(await Story.findOne({"_id:":storiesIds}));
+  }
+  let backlog=new Backlog({
+    startDate:startDate,
+    endDate: endDate,
+    stories: stories
+  });
+  backlog.save().then(obj=>res.status(200).json({
+    message:res.__('backlog.success'),
+    obj: obj
+  }))
+  .catch(e => res.status(500).json({
+    message:res.__('backlog.fail'),
+    obj: e
+  }));
 }
-function replace(req, res, next) {
-  res.send('Remplaza solo usuario');
+async function replace(req, res, next) {
+    let stories=[];
+    const id=req.params.id;
+    const startDate=req.body.startDate ? req.body.startDate : "";//FECHAS
+    const endDate=req.body.endDate ? req.body.endDate : "";
+    const storiesIds=req.body.stories ? [req.body.storiesIds] : [];
+    if(storiesIds.length>1){
+        for(const storyId of storiesIds){
+          stories.push(await Story.findOne({"_id:":storyId}));
+        };}else{
+          stories.push(await Story.findOne({"_id:":storiesIds}));
+        }
+    let backlog = new Object({
+        _startDate:startDate,
+        _endDate: endDate,
+        _stories: stories
+    });
+    Backlog.findOneAndUpdate({"_id":id},backlog,{new:true}).then(obj=>res.status(200).json({
+        message:res.__('backlog.modify_s'),
+        obj: obj
+    }))
+    .catch(e=>res.status(500).json({
+        message:res.__('backlog.modify_f'),
+        error: e
+    }));
 }
-function edit(req, res, next) {
-  res.send('Edita solo usuario');
-}
+async function edit(req, res, next) {
+    let stories=[];
+    const id=req.params.id;
+    const startDate=req.body.startDate;
+    const endDate=req.body.endDate;
+    const storiesIds=[req.body.storiesIds];
+    if(storiesIds.length>1){
+        for(const storyId of storiesIds){
+          stories.push(await Story.findOne({"_id:":storyId}));
+        };}else{
+          stories.push(await Story.findOne({"_id:":storiesIds}));
+    }
+    let backlog = new Object();
+    if(startDate){
+        backlog._startDate=startDate;
+    }
+    if(endDate){
+        backlog._endDate=endDate;
+    }
+    if(stories){
+        backlog._stories=stories;
+    }
+    Backlog.findOneAndUpdate({"_id":id},backlog,{new:true}).then(obj=>res.status(200).json({
+        message:res.__('backlog.modify_s'),
+        obj: obj
+    }))
+    .catch(e=>res.status(500).json({
+        message:res.__('backlog.modify_f'),
+        error: e
+    }));}
 function destroy(req, res, next) {
-  res.send('Elimina solo usuario');
+    const id=req.params.id;
+    Backlog.remove({"_id":id}).then(obj=>res.status(200).json({
+        message:res.__('backlog.destroy_s'),
+        obj: obj
+    }))
+    .catch(e=>res.status(500).json({
+        message:res.__('backlog.destroy_f'),
+        error: e
+    }))
 }
-module.exports={list,get,create,replace,edit,destroy};
+module.exports={getBacklogs,getBacklog,create,replace,edit,destroy};

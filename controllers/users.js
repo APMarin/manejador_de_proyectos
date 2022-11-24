@@ -1,23 +1,105 @@
-const express=require("express")
+const express = require('express');
+const bcrypt = require('bcrypt');
+const User = require('../models/user');
+const config = require('config');
+
+
 function list(req, res, next) {
-  res.send('Lista de usuarios');
+  res.send('respond with list');
 }
-function get(req, res, next) {
+
+function index(req, res, next){
+    const id = req.params.id;
+    res.send()
+}
+
+async function create(req, res, next){
+    let name = req.body.name;
+    let lastName = req.body.lastName;
+    let email = req.body.email;
+    let password = req.body.password;
+    const salt = await bcrypt.genSalt(10);
+
+    const passwordHash = await bcrypt.hash(password, salt);
+
+    let user = new User({
+      name: name,
+      lastName: lastName,
+      email: email,
+      password, passwordHash,
+      salt: salt
+    });
+
+    user.save().then(obj => res.status(200).json({
+      message:res.__('user.success'),
+      obj: obj
+    }))
+    .catch(ex => res.status(500).json({
+      message:res.__('user.fail'),
+      obj: ex
+    }));
+}
+
+
+function replace(req,res,next) {
   const id=req.params.id;
-  res.send('Un solo usuario con id: '+id);
+  let name=req.body.name ? req.body.name : "";
+  let lastName=req.body.lastName ? req.body.lastName : "";
+  let email = req.body.email;
+  let password = req.body.password;
+
+  let user= new Object({
+    _name:name,
+    _lastName:lastName,
+    _password:password,
+    _email:email
+  });
+  User.findOneAndUpdate({"_id":id},actor).then(obj=>res.status(200).json({
+    message:res.__('user.replaced_s'),
+    obj:obj
+  })).catch(ex=>res.status(500).json({
+    message:res.__('user.replaced_f'),
+    obj:ex
+  }));
+
 }
-function create(req, res, next) {
+
+function edit(req,res,next) {
+  const id=req.params.id;
   const name=req.body.name;
   const lastName=req.body.lastName;
-  res.send('Crea un solo usuario con nombre: '+name+' y apellido: '+lastName);
+  let email = req.body.email;
+  let password = req.body.password;
+  
+  let user=new Object();
+
+  if(name){
+    actor._name=name;
+  }
+  if(lastName){
+    actor._lastName=lastName;
+  }
+
+  User.findOneAndUpdate({"_id":id},actor).then(obj=>res.status(200).json({
+    message:res.__('user.updated_s'),
+    obj:obj
+  })).catch(ex=>res.status(500).json({
+    message:res.__('user.updated_f'),
+    obj:ex
+  }));
 }
-function replace(req, res, next) {
-  res.send('Remplaza solo usuario');
+
+function destroy(req,res,next) {
+  const id=req.params.id;
+  User.remove({"_id":id}).then(obj=>res.status(200).json({
+    message:res._('user.destroy_s'),
+    obj:obj
+  })).catch(ex=>res.status(500).json({
+    message:res._('user.destroy_f'),
+    obj:ex
+  }));
 }
-function edit(req, res, next) {
-  res.send('Edita solo usuario');
-}
-function destroy(req, res, next) {
-  res.send('Elimina solo usuario');
-}
-module.exports={list,get,create,replace,edit,destroy};
+
+module.exports={
+  list,index,create,replace,edit,destroy
+};

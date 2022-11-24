@@ -1,5 +1,5 @@
 const mongoose=require('mongoose');
-const schema=mongoose.schema({
+const schema=mongoose.Schema({
 	_name: String,
 	_lastName: String,
 	_email: String,
