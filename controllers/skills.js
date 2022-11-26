@@ -8,7 +8,7 @@ function getSkills(req, res, next) {
         obj: obj
     }))
     .catch(e =>res.status(500).json({
-        message:res.__('copies.list_f'),
+        message:res.__('skills.list_f'),
         error: e
     }));
 }

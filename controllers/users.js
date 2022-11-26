@@ -5,7 +5,16 @@ const config = require('config');
 
 
 function list(req, res, next) {
-  res.send('respond with list');
+  const page = req.query.page ? req.query.page : 1;
+  User.paginate({}, {page: page, limit: 10})
+  .then(obj => {
+    if(obj.docs.length == 0) res.status(204).send();
+    else res.status(200).json({
+      message: res.__n('models.user', obj.docs.length),
+      data: obj
+    });
+  })
+  .catch(err => res.status(500).json(err));
 }
 
 function index(req, res, next){

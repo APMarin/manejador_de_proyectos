@@ -1,6 +1,6 @@
 {
     "secret": {
-        "key": "8c8c91bc137a145a7973db5fb81d99d8"
+        "key": "ae192976df180b2abc8860a6707b7666"
     },
-    "dbChain": "mongodb://127.0.0.1:27017/videoclub"
+    "dbChain": "mongodb://localhost:27017/scrum"
 }

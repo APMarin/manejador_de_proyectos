@@ -1,0 +1,6 @@
+{
+    "secret": {
+        "key": "b0499cd166d19ed1b3c5c7d5f200fabb"
+    },
+    "dbChain": "mongodb://localhost:27017/scrum-prod"
+}

@@ -19,7 +19,7 @@ const releasesRouter = require('./routes/releases');
 const workersRouter = require('./routes/workers');
 
 const uri= config.get("dbChain");
-//"mongodb://localhost:27017/videoclub";
+//"mongodb://localhost:27017/scrum";
 mongoose.connect(uri);
 const db = mongoose.connection;
 const app = express();
