@@ -1,19 +1,35 @@
-const supertest=require ('supertest');
-const app=require('../app');
+const  supertest = require('supertest');
 
-//sentencia
-describe("Probar el sistema de autenticacion."()=>{
-  //Casos de prueba => 50%
-  it('Deberia de obtener un login con usuario y contraseña correcto',(done)=>{
-    supertest(app).post('/login')
-    .send({'email':'a307730@uach.mx','password':'123abc'})
-    .expect(200)
-    .end(function (err,res){
-      if(err){
-        done(err);
-      }else{
-      done();
-      }
+const app = require('../app');
+
+// Sentencia   
+
+describe("Probar el sistema de autenticación", ()=>{
+    it("debería de obtener un login con usuario y contraseña correctos", (done)=>{
+        supertest(app).post("/login")
+        .send({'email': 'u@gmail.com', 'password': '123456'})
+        .expect(200)
+        .end(function(err, res){
+            if(err) {
+                done(err);
+            }else{
+                done();
+            }
+        });
     });
-  });
+
+
+    it("No debería de obtener un login con usuario y contraseña incorrectos", (done)=>{
+        supertest(app).post("/login")
+        .send({'email': 'a307737@uach.mx', 'password': 'abcd1234'})
+        .expect(403)
+        .end(function(err, res){
+            if(err) {
+                done(err);
+            }else{
+                done();
+            }
+        });
+    });
+
 });

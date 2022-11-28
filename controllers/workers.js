@@ -1,24 +1,25 @@
 const express=require("express");
 const Worker=require('../models/worker');
+const Skill=require('../models/skill');
 const config = require('config');
 
 function getWorkers(req, res, next) {
     Worker.find().then(obj=>res.status(200).json({
-        message:res._('worker.list_s'),
+        message:res.__('worker.list_s'),
         obj: obj
     }))
     .catch(e =>res.status(500).json({
-        message:res._('worker.list_f'),
+        message:res.__('worker.list_f'),
         error: e
     }));}
 function getWorker(req, res, next) {
     const id=req.params.id;
     Worker.findOne({"_id":id}).then(obj=>res.status(200).json({
-      message:res._('worker.get_s'),
+      message:res.__('worker.get_s'),
       obj: obj
     }))
     .catch(e=>res.status(500).json({
-      message:res._('worker.get_f'),
+      message:res.__('worker.get_f'),
       error: e
     }));
 }
@@ -51,10 +52,10 @@ async function create(req, res, next) {
     skills:skills
   });
   worker.save().then(obj=>res.status(200).json({
-    message:res._('worker.success'),
+    message:res.__('worker.success'),
     obj:obj
   })).catch(e=>res.status(400).json({
-    message:res._('worker.fail'),
+    message:res.__('worker.fail'),
     error:e
   }));
 }

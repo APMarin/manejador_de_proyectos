@@ -1,20 +1,32 @@
-const supertest=require ('supertest');
+const  supertest = require('supertest');
 
-const app=require('../app');
+const app = require('../app');
 
-//sentencia
-describe("Probar el sistema de id."()=>{
-  //Casos de prueba => 50%
-  it('Deberia de obtener un id del historial correcto',(done)=>{
-    supertest(app).post('/')
-    .send({'id':'1'})
-    .expect(200)
-    .end(function (err,res){
-      if(err){
-        done(err);
-      }else{
-      done();
-      }
+describe("Probar el sistema de id de historias", ()=>{
+    it("Debería tener una id de backlog correcto", (done)=>{
+        supertest(app).get("/stories")
+        .send({'id':'63851019b93ab7ed689c629c'})
+        .expect(200)
+        .end(function(err, res){
+            if(err) {
+                done(err);
+            }else{
+                done();
+            }
+        });
     });
-  });
+
+    it("No debería tener una id de historias correcto", (done)=>{
+        supertest(app).get("/stories")
+        .send({'id':'63851019b93ab7ed689c629c2'})
+        .expect(403)
+        .end(function(err, res){
+            if(err) {
+                done(err);
+            }else{
+                done();
+            }
+        });
+    });
+
 });

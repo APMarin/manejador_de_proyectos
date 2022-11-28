@@ -3,8 +3,7 @@ const schema=mongoose.Schema({
     _technology:String,
     _rank: {
         type: String,
-        enum:['Master','Senior','Junior'],
-        default:'Available'
+        enum:['Master','Senior','Junior']
     }
 });
 class Skill {

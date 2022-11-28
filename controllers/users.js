@@ -1,20 +1,19 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const async = require ('async');
 const User = require('../models/user');
 const config = require('config');
 
 
 function list(req, res, next) {
-  const page = req.query.page ? req.query.page : 1;
-  User.paginate({}, {page: page, limit: 10})
-  .then(obj => {
-    if(obj.docs.length == 0) res.status(204).send();
-    else res.status(200).json({
-      message: res.__n('models.user', obj.docs.length),
-      data: obj
-    });
-  })
-  .catch(err => res.status(500).json(err));
+  User.find().then(obj=>res.status(200).json({
+    message:res.__('user.list_s'),
+    obj: obj
+}))
+.catch(e =>res.status(500).json({
+    message:res.__('user.list_f'),
+    error: e
+}));
 }
 
 function index(req, res, next){
@@ -22,31 +21,38 @@ function index(req, res, next){
     res.send()
 }
 
-async function create(req, res, next){
-    let name = req.body.name;
-    let lastName = req.body.lastName;
-    let email = req.body.email;
-    let password = req.body.password;
-    const salt = await bcrypt.genSalt(10);
+function create(req, res, next){
+  let name = req.body.name;
+  let lastName = req.body.lastName;
+  let email = req.body.email;
+  let password = req.body.password;
 
-    const passwordHash = await bcrypt.hash(password, salt);
 
-    let user = new User({
-      name: name,
-      lastName: lastName,
-      email: email,
-      password, passwordHash,
-      salt: salt
-    });
+  async.parallel({
+      salt: (callback) => {
+          bcrypt.genSalt(10, callback);
+      }
+  }, (err, result) => {
+      bcrypt.hash(password, result.salt, (err, hash) => {
 
-    user.save().then(obj => res.status(200).json({
-      message:res.__('user.success'),
-      obj: obj
-    }))
-    .catch(ex => res.status(500).json({
-      message:res.__('user.fail'),
-      obj: ex
-    }));
+          let user = new User({
+              name: name,
+              lastName: lastName,
+              email: email,
+              password: hash,
+              salt: result.salt
+          });
+
+          user.save().then(obj => res.status(200).json({
+              message:res.__('user.success'),
+              obj: obj
+          })).catch(ex => res.status(500).json({
+              message: res.__('user.fail'),
+              obj: ex
+          }));
+      })
+  });
+
 }
 
 
@@ -63,7 +69,7 @@ function replace(req,res,next) {
     _password:password,
     _email:email
   });
-  User.findOneAndUpdate({"_id":id},actor).then(obj=>res.status(200).json({
+  User.findOneAndUpdate({"_id":id},user).then(obj=>res.status(200).json({
     message:res.__('user.replaced_s'),
     obj:obj
   })).catch(ex=>res.status(500).json({
@@ -101,10 +107,10 @@ function edit(req,res,next) {
 function destroy(req,res,next) {
   const id=req.params.id;
   User.remove({"_id":id}).then(obj=>res.status(200).json({
-    message:res._('user.destroy_s'),
+    message:res.__('user.destroy_s'),
     obj:obj
   })).catch(ex=>res.status(500).json({
-    message:res._('user.destroy_f'),
+    message:res.__('user.destroy_f'),
     obj:ex
   }));
 }

@@ -4,21 +4,21 @@ const config = require('config');
 
 function getStories(req, res, next) {
     Story.find().then(obj=>res.status(200).json({
-        message:res._('story.list_s'),
+        message:res.__('story.list_s'),
         obj: obj
     }))
     .catch(e =>res.status(500).json({
-        message:res._('story.list_f'),
+        message:res.__('story.list_f'),
         error: e
     }));}
 function getStory(req, res, next) {
     const id=req.params.id;
     Story.findOne({"_id":id}).then(obj=>res.status(200).json({
-      message:res._('story.get_s'),
+      message:res.__('story.get_s'),
       obj: obj
     }))
     .catch(e=>res.status(500).json({
-      message:res._('story.get_f'),
+      message:res.__('story.get_f'),
       error: e
     }));
 }
@@ -44,10 +44,10 @@ function create(req, res, next) {
     details:Details,
   });
   story.save().then(obj=>res.status(200).json({
-    message:res._('story.success'),
+    message:res.__('story.success'),
     obj:obj
   })).catch(e=>res.status(400).json({
-    message:res._('story.fail'),
+    message:res.__('story.fail'),
     error:e
   }));
 }

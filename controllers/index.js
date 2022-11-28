@@ -16,36 +16,31 @@ function login (req, res, next) {
     if(err){
       //login no ok
       res.status(403).json({
-        message:res.__('bad.login'),
-        obj: err
+        message:res.__('bad.login')
       });
     }
     if(hash == user.password){
+          const jwtKey=config.get("secret.key");
           //login OK
-          const jwtKey = config.get("secret.key");
           res.status(200).json({
-            message:res.__('ok.login'),
-            obj : jwt.sign({exp: Math.floor(Date.now()/1000)+60}, jwtKey)
+            message:res.__("ok.login")
           });
         }else{
           res.status(403).json({
-            message:res.__('bad.login'),
-            obj: null
+            message:res.__('bad.login')
           });
         }
       });
     }else{
       //login not ok
       res.status(403).json({
-        message:res.__('bad.login'),
-        obj: err
+        message:res.__('bad.login')
       });
     }
   }).catch((err)=>{
     //login no ok
     res.status(403).json({
-      message:res.__('bad.login'),
-      obj: err
+      message:res.__('bad.login')
     });
   });
 }

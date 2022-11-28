@@ -6,21 +6,21 @@ const config = require('config');
 
 function getProjects(req, res, next) {
     Project.find().then(obj=>res.status(200).json({
-        message:res._('project.list_s'),
+        message:res.__('project.list_s'),
         obj: obj
     }))
     .catch(e =>res.status(500).json({
-        message:res._('project.list_f'),
+        message:res.__('project.list_f'),
         error: e
     }));}
 function getProject(req, res, next) {
     const id=req.params.id;
     Project.findOne({"_id":id}).then(obj=>res.status(200).json({
-      message:res._('project.get_s'),
+      message:res.__('project.get_s'),
       obj: obj
     }))
     .catch(e=>res.status(500).json({
-      message:res._('project.get_f'),
+      message:res.__('project.get_f'),
       error: e
     }));
 }
@@ -55,10 +55,10 @@ async function create(req, res, next) {
     team:team
   });
   project.save().then(obj=>res.status(200).json({
-    message:res._('project.success'),
+    message:res.__('project.success'),
     obj:obj
   })).catch(e=>res.status(400).json({
-    message:res._('project.fail'),
+    message:res.__('project.fail'),
     error:e
   }));
 }
