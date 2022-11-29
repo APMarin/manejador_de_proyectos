@@ -2,5 +2,5 @@
     "secret": {
         "key": "ae192976df180b2abc8860a6707b7666"
     },
-    "dbChain": "mongodb://localhost:27017/scrum"
+    "dbChain": "mongodb+srv://admin:admin@cluster0.qjc2kk3.mongodb.net/Scrum?retryWrites=true&w=majority"
 }
