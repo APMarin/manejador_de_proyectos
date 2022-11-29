@@ -5,7 +5,7 @@ const app = require('../app');
 describe("Probar el sistema de id de tableros", ()=>{
     it("Debería tener una id de tablero correcto", (done)=>{
         supertest(app).get("/boards")
-        .send({'id':'63851876b93ab7ed689c62a2'})
+        .send({'id':'6386685a1a01259b4289fea7'})
         .expect(200)
         .end(function(err, res){
             if(err) {
@@ -18,7 +18,7 @@ describe("Probar el sistema de id de tableros", ()=>{
 
     it("No debería tener una id de tablero correcto", (done)=>{
         supertest(app).get("/boards")
-        .send({'id':'63851876b93ab7ed689c62a22'})
+        .send({'id':'6386685a1a01259b4289fea72'})
         .expect(403)
         .end(function(err, res){
             if(err) {

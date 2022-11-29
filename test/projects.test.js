@@ -5,7 +5,7 @@ const app = require('../app');
 describe("Probar el sistema de id de proyectos", ()=>{
     it("Debería tener una id de proyecto correcto", (done)=>{
         supertest(app).get("/projects")
-        .send({'id':'63851aa1c4eaedc03fb05e3e'})
+        .send({'id':'63866c14647c25594128f95c'})
         .expect(200)
         .end(function(err, res){
             if(err) {
@@ -18,7 +18,7 @@ describe("Probar el sistema de id de proyectos", ()=>{
 
     it("No debería tener una id de proyecto correcto", (done)=>{
         supertest(app).get("/projects")
-        .send({'id':'63851aa1c4eaedc03fb05e3e2'})
+        .send({'id':'63866c14647c25594128f95c2'})
         .expect(403)
         .end(function(err, res){
             if(err) {

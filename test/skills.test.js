@@ -5,7 +5,7 @@ const app = require('../app');
 describe("Probar el sistema de id de habilidades", ()=>{
     it("Debería tener una id de habilidad correcta", (done)=>{
         supertest(app).get("/skills")
-        .send({'id':'638519cec4eaedc03fb05e37'})
+        .send({'id':'638668671a01259b4289feac'})
         .expect(200)
         .end(function(err, res){
             if(err) {
@@ -18,7 +18,7 @@ describe("Probar el sistema de id de habilidades", ()=>{
 
     it("No debería tener una id de habilidad correcta", (done)=>{
         supertest(app).get("/skills")
-        .send({'id':'638519cec4eaedc03fb05e372'})
+        .send({'id':'638668671a01259b4289feac2'})
         .expect(403)
         .end(function(err, res){
             if(err) {

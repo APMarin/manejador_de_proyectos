@@ -5,7 +5,7 @@ const app = require('../app');
 describe("Probar el sistema de id de Usuario", ()=>{
     it("Debería de obtener una id de Usuario correcto", (done)=>{
         supertest(app).get("/users")
-        .send({'id':'63846d55563c77f9ecfdf504'})
+        .send({'id':'63866b40647c25594128f94c'})
         .expect(200)
         .end(function(err, res){
             if(err) {
